@@ -1,12 +1,13 @@
 package cs2030.simulator;
 
 class RestEvent extends Event {
+    private static final int THREE = 3;
     private final int type;
     private final int serverId;
 
     RestEvent(Customer customer, double time, int serverId) {
         super(customer, time);
-        this.type = 3;
+        this.type = THREE;
         this.serverId = serverId;
     }
 

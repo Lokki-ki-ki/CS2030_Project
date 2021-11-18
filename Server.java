@@ -1,4 +1,5 @@
 package cs2030.simulator;
+
 import java.util.List;
 import java.util.ArrayList;
 
@@ -37,7 +38,8 @@ class Server {
         this.machine = machine;
     }
 
-    Server(int id, int queueLength, List<Customer> customerInQueue, String status, double restTime, boolean machine) {
+    Server(int id, int queueLength, List<Customer> customerInQueue, 
+        String status, double restTime, boolean machine) {
         this.id = id;
         this.queueLength = queueLength;
         this.customerInQueue = customerInQueue;
@@ -95,7 +97,8 @@ class Server {
     }
 
     Server setStatus(String string) {
-        return new Server(this.id, this.queueLength, this.customerInQueue, string, this.restTime, this.machine);
+        return new Server(this.id, this.queueLength, this.customerInQueue, 
+            string, this.restTime, this.machine);
     }
 
     Event serve(Customer customer, double time, boolean machine) {
@@ -108,8 +111,19 @@ class Server {
         return new DoneEvent(customer, time + customer.getTimeNeed(), this.id, false);
     }
 
+    Event serve(Customer customer, double time, boolean machine, double serveTime) {
+        double lastTime = time;
+        //double customerTime = customer.getTime();
+        if (machine) {
+            return new DoneEvent(customer, time + serveTime, this.id, true);
+        }
+
+        return new DoneEvent(customer, time + serveTime, this.id, false);
+    }
+
     Server setRestTime(double restTime) {
-        return new Server(this.id, this.queueLength, this.customerInQueue, this.status, restTime, this.machine);
+        return new Server(this.id, this.queueLength, this.customerInQueue, 
+            this.status, restTime, this.machine);
     }
 
     double getRestTime() {
@@ -122,6 +136,10 @@ class Server {
 
     boolean isMachine() {
         return this.machine;
+    }
+
+    int getQueueLength() {
+        return this.customerInQueue.size();
     }
 
     @Override

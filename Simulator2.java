@@ -1,4 +1,5 @@
 package cs2030.simulator;
+
 import java.util.List;
 import java.util.ArrayList;
 import java.util.PriorityQueue;
@@ -8,8 +9,15 @@ public class Simulator2 {
     private final List<Customer> customers;
     private final List<Server> servers;
     private final PriorityQueue<Event> queue;
+    private static final int RESTEVENT_TYPE = 3;
+    private static final int SERVEEVENT_TYPE = 4;
+    private static final int DONEEVENT_TYPE = 5;
     
-
+    /**
+     * This is the simulator for Main2.java.
+     * @param arrivalsList Take in the List of arrive times and serve times.
+     * @param serInfo Is a Array of [number of servers, length of queue].
+     */
     public Simulator2(List<Double[]> arrivalsList, int[] serInfo) {
         this.customers = new ArrayList<Customer>();
         this.servers = new ArrayList<Server>();
@@ -37,6 +45,9 @@ public class Simulator2 {
         this.servers.set(index, server);
     }
 
+    /**
+     * The method for simulation.
+     */
     public void simulate() {
 
         int numOfLeave = 0;
@@ -47,7 +58,7 @@ public class Simulator2 {
         }
 
         PriorityQueue<Event> newQueue = new PriorityQueue<Event>(new EventComparator());
-        while(!this.queue.isEmpty()) {
+        while (!this.queue.isEmpty()) {
             Event event = this.queue.poll();
             Customer customer = event.getCustomer();
 
@@ -90,7 +101,7 @@ public class Simulator2 {
                 
             }
 
-            if (event.getType() == 3) {
+            if (event.getType() == RESTEVENT_TYPE) {
                 int id = event.getServerId();
                 Server s = this.servers.get(this.getIndex(id));
                 if (s.hasNext()) {
@@ -104,7 +115,7 @@ public class Simulator2 {
                 this.updateServer(s);
             }
 
-            if (event.getType() == 4) {//ServeEvent
+            if (event.getType() == SERVEEVENT_TYPE) { //ServeEvent
                 newQueue.add(event);//print ServeEvent
                 int id = event.getServerId();
                 Server s = this.servers.get(this.getIndex(id));
@@ -114,7 +125,7 @@ public class Simulator2 {
                 
             }
 
-            if (event.getType() == 5) {
+            if (event.getType() == DONEEVENT_TYPE) {
                 newQueue.add(event);//print DoneEvent
                 
                 int id = event.getServerId();
@@ -135,7 +146,8 @@ public class Simulator2 {
                 } else {
                     s = s.setStatus("rest");
                     this.updateServer(s);
-                    Event nextEvent = new RestEvent(customer, event.getTime() + s.getRestTime(), id);
+                    Event nextEvent = new RestEvent(customer, event.getTime() 
+                        + s.getRestTime(), id);
                     this.queue.add(nextEvent);
                 }
                 
@@ -143,14 +155,15 @@ public class Simulator2 {
             
         }
 
-        while(!newQueue.isEmpty()) {
+        while (!newQueue.isEmpty()) {
             Event event = newQueue.poll();
             System.out.println(event);
         }
 
 
         int numOfServed = this.customers.size() - numOfLeave;
-        System.out.println("[" + String.format("%.3f", waitTime/numOfServed) + " " + numOfServed + " " + numOfLeave + "]");
+        System.out.println("[" + String.format("%.3f", waitTime / numOfServed) + " " 
+            + numOfServed + " " + numOfLeave + "]");
 
 
     }

@@ -1,4 +1,5 @@
 package cs2030.simulator;
+
 import java.util.List;
 import java.util.ArrayList;
 
@@ -25,6 +26,10 @@ class ArriveEvent extends Event {
 
     @Override
     public String toString() {
+        if (super.getCustomer().isGreedy()) {
+            return String.format("%.3f", super.getTime()) + " " + super.getCustomerId() 
+                + "(greedy) arrives";
+        }
         return String.format("%.3f", super.getTime()) + " " + super.getCustomerId() + " arrives";
     }
 }

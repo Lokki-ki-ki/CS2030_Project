@@ -1,4 +1,5 @@
 package cs2030.simulator;
+
 import java.util.List;
 
 abstract class Event {

@@ -15,7 +15,7 @@ class Main4 {
         int numOfCustomers = sc.nextInt();
 
 
-        while(numOfCustomers > 0) {
+        while (numOfCustomers > 0) {
             double are = sc.nextDouble();
             double ser = sc.nextDouble();
             arrivals.add(new Double[]{are, ser});
@@ -32,7 +32,8 @@ class Main4 {
             }
         } 
     
-        Simulator4 s = new Simulator4(arrivals, new int[]{numOfServers, queueLength, numOfSelf}, restList);
+        Simulator4 s = new Simulator4(arrivals, 
+            new int[]{numOfServers, queueLength, numOfSelf}, restList);
         s.simulate();
     }
 }

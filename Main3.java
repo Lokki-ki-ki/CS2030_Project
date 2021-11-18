@@ -15,7 +15,7 @@ class Main3 {
         int numOfCustomers = sc.nextInt();
 
 
-        while(numOfCustomers > 0) {
+        while (numOfCustomers > 0) {
             double are = sc.nextDouble();
             double ser = sc.nextDouble();
             arrivals.add(new Double[]{are, ser});

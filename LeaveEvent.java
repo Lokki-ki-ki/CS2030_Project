@@ -1,13 +1,15 @@
 package cs2030.simulator;
+
 import java.util.List;
 import java.util.ArrayList;
 
 class LeaveEvent extends Event {
+    private static final int SIX = 6;
     private final int type;
     
     LeaveEvent(Customer customer, double time) {
         super(customer, time);
-        this.type = 6;
+        this.type = SIX;
     }
 
     @Override
@@ -22,6 +24,10 @@ class LeaveEvent extends Event {
 
     @Override
     public String toString() {
+        if (super.getCustomer().isGreedy()) {
+            return String.format("%.3f", super.getTime()) + " " + super.getCustomerId() 
+                + "(greedy) leaves";
+        }
         return String.format("%.3f", super.getTime()) + " " + super.getCustomerId() + " leaves";
     }
 }

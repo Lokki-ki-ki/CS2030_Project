@@ -1,17 +1,22 @@
-**Simulate**
+**Level5**
+\n RandomGenerator(seed, arrivalrate, servicerate, rho)
+\n Step1 generate the customers with genInterArrival(), whether greedy() -done
+\n Step2 add serviceTime in DoneEvent -done
+\n Step3 edit rest in DoneEvent -> If rest, generate the restTime -done
+\n Step4 deal with greedy
 
+**Simulate**
     1.ArriveEvent:
         -check canServe() 
             (1) idle -> add ServeEvent()
         -check-Self-checkout canserve()
             inside all self checkout, at leaset one "idle" -> ServeEvent()
+        -check greedy()
         -check canQueue() -> throw WaitEvent() & add in queueList
             (1) working & empty seat in queue
             (2) rest & has next & empty seat in queue
-        -check rest & no next -> start after rest complete(By add customer into queue) (guess no need anymore)
         -check self-checkout can queue() ->total queue exceed?
             add in totoal queue()
-            
     2.WaitEvent()
 
     3.RestEvent()
@@ -22,6 +27,7 @@
         serve() -> DoneEvent()
     
     5.DoneEvent
+        -new check if rest
         (0) self-checkout has next(total queue has) ->add ServeNext()
         (0) self checkout no next -> "idle"
         (1) no rest & no next -> idle

@@ -33,10 +33,22 @@ class WaitEvent extends Event {
     @Override
     public String toString() {
         if (!this.machine) {
-            return String.format("%.3f", super.getTime()) + " " + this.getCustomerId() 
-        + " waits at server " + this.serverId;
+            if (super.getCustomer().isGreedy()) {
+                return String.format("%.3f", super.getTime()) + " " + this.getCustomerId() 
+                    + "(greedy) waits at server " + this.serverId;
+            } else {
+                return String.format("%.3f", super.getTime()) + " " + this.getCustomerId() 
+                    + " waits at server " + this.serverId;
+            }
+        } else {
+            if (super.getCustomer().isGreedy()) {
+                return String.format("%.3f", super.getTime()) + " " + this.getCustomerId() 
+                    + "(greedy) waits at self-check " + this.serverId;
+            } else {
+                return String.format("%.3f", super.getTime()) + " " + this.getCustomerId() 
+                    + " waits at self-check " + this.serverId;
+            }
         }
-        return String.format("%.3f", super.getTime()) + " " + this.getCustomerId() 
-        + " waits at self-check " + this.serverId;
+        
     }
 }
