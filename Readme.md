@@ -1,4 +1,5 @@
 **Simulate**
+
     1.ArriveEvent:
         check canServe() 
             (1) idle -> add ServeEvent()
@@ -10,6 +11,7 @@
             (2) rest & has next & empty seat in queue
         check self-checkout can queue() ->total queue exceed?
             add in totoal queue()
+            
     2.WaitEvent()
 
     3.RestEvent()
