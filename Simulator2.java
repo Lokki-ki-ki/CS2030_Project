@@ -139,9 +139,6 @@ public class Simulator2 {
                     this.queue.add(nextEvent);
                 }
                 
-                //s = s.rest(this.restList.get(0));
-                //this.restList.remove(0);
-                
             }
             
         }

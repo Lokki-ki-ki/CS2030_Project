@@ -12,6 +12,7 @@ public class Simulator4 {
     private final PriorityQueue<Event> queue;
     private final List<Double> restList;
     private final int machineLimit;
+    private final int machineNum;
     
 
     public Simulator4(List<Double[]> arrivalsList, int[] serInfo, List<Double> restList) {
@@ -30,6 +31,7 @@ public class Simulator4 {
         this.queue = new PriorityQueue<Event>(new EventComparator());
         this.restList = restList;
         this.machineLimit = serInfo[1];
+        this.machineNum = serInfo[2];
     }
 
     int getIndex(int serverId) {
@@ -46,16 +48,19 @@ public class Simulator4 {
         this.servers.set(index, server);
     }
 
+    /** Check there is machine in Servers Lists and at least one of them "idle" */
     public boolean checkMachine() {
         int count = 0;
+        int num = 0;
         for (Server s : this.servers) {
             if (s.isMachine()) {
+                num++;
                 if (s.getStatus().equals("idle")) {
                     count++;
                 }
             }
         }
-        return count > 0;
+        return count > 0 && num > 0;
     }
 
     int getMachineNum() {
@@ -89,10 +94,9 @@ public class Simulator4 {
                 boolean execute = false;
                 
                 /** Check if there is idle */
-                d: for (int i = 0; i < this.servers.size() - this.getMachineNum(); i++) {
+                d: for (int i = 0; i < this.servers.size() - this.machineNum; i++) {
                     Server s = this.servers.get(i);
-                    if (s.canServe(customer)) {
-                        if (s.getStatus().equals("idle")) {
+                    if (s.canServe(customer) && s.getStatus().equals("idle")) {
                             Event nextEvent = new ServeEvent(customer, event.getTime(), i + 1);
                             s = s.setStatus("work");
                             this.updateServer(s);
@@ -101,12 +105,11 @@ public class Simulator4 {
                             newQueue.add(event);//print this arrive
                             break d;
                         } 
-                    } 
                 }
 
                 /** Check if there is available self */
                 if (execute == false && this.checkMachine()) {
-                    c: for (int i = this.getMachineNum() - 1; i < this.servers.size(); i++) {
+                    c: for (int i = this.servers.size() - this.machineNum; i < this.servers.size(); i++) {
                         Server s = this.servers.get(i);
                         if (s.getStatus().equals("idle")) {
                             Event nextEvent = new ServeEvent(customer, event.getTime(), i + 1, true);
@@ -121,27 +124,15 @@ public class Simulator4 {
 
                 }
 
-                /** Check if there is rest idle */
-                if (execute == false) {
-                    a: for (int i = 0; i < this.servers.size() - this.getMachineNum(); i++) {
-                        Server s = this.servers.get(i);
-                        if (s.canServe(customer)) {
-                            execute = true;
-                            s.queue(customer);
-                            newQueue.add(event);
-                            break a;
-                        }
-                    }
-                }
 
                 /** Check if can queue in work server */
                 if (execute == false) {
-                    b: for (int i = 0; i < this.servers.size() - this.getMachineNum(); i++) {
+                    b: for (int i = 0; i < this.servers.size() - this.machineNum; i++) {
                         Server s = this.servers.get(i);
                         if (s.canQueue()) {
                             execute = true;
                             s.queue(customer);
-                            Event nextEvent = new WaitEvent(customer, event.getTime(), i + 1);
+                            Event nextEvent = new WaitEvent(customer, event.getTime(), i + 1, false);
                             newQueue.add(event);//print ArriveEvent
                             newQueue.add(nextEvent);//print WaitEvent
                             break b;
@@ -149,16 +140,30 @@ public class Simulator4 {
                     }
                 }
 
+
                 /** Check if can queue in machine */
                 if (execute == false) {
                     if (this.machineLimit > machineCustomers.size() && this.getMachineNum() > 0) {
                         execute = true;
                         machineCustomers.add(customer);
-                        Event nextEvent = new WaitEvent(customer, event.getTime(), this.servers.size() - this.getMachineNum(), true);
+                        Event nextEvent = new WaitEvent(customer, event.getTime(), this.servers.size() - this.machineNum + 1, true);
                         newQueue.add(event);//print ArriveEvent
                         newQueue.add(nextEvent);//print WaitEvent
                     }
                 }
+
+                // /** Check if there is rest idle */
+                // if (execute == false) {
+                //     a: for (int i = 0; i < this.servers.size() - this.machineNum; i++) {
+                //         Server s = this.servers.get(i);
+                //         if (s.canServe(customer)) {
+                //             execute = true;
+                //             s.queue(customer);
+                //             newQueue.add(event);
+                //             break a;
+                //         }
+                //     }
+                // }
                 
                 /** Else only Leave */
                 if (execute == false) {
@@ -237,7 +242,6 @@ public class Simulator4 {
         }
  
             
-
 
         while(!newQueue.isEmpty()) {
             Event event = newQueue.poll();

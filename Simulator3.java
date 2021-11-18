@@ -72,17 +72,7 @@ public class Simulator3 {
                     } 
                 }
 
-                if (execute == false) {
-                    for (int i = 0; i < this.servers.size(); i++) {
-                        Server s = this.servers.get(i);
-                        if (s.canServe(customer)) {
-                            execute = true;
-                            s.queue(customer);
-                            newQueue.add(event);
-                            break;
-                        }
-                    }
-                }
+                
 
                 if (execute == false) {
                     for (int i = 0; i < this.servers.size(); i++) {
@@ -93,6 +83,18 @@ public class Simulator3 {
                             Event nextEvent = new WaitEvent(customer, event.getTime(), i + 1);
                             newQueue.add(event);//print ArriveEvent
                             newQueue.add(nextEvent);//print WaitEvent
+                            break;
+                        }
+                    }
+                }
+
+                if (execute == false) {
+                    for (int i = 0; i < this.servers.size(); i++) {
+                        Server s = this.servers.get(i);
+                        if (s.canServe(customer)) {
+                            execute = true;
+                            s.queue(customer);
+                            newQueue.add(event);
                             break;
                         }
                     }

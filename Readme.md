@@ -1,14 +1,14 @@
 **Simulate**
     1.ArriveEvent:
-        check canServe() 
+        -check canServe() 
             (1) idle -> add ServeEvent()
-            (2) rest & no next -> start after rest complete(By add customer into queue)
-        check-Self-checkout canserve()
+        -check-Self-checkout canserve()
             inside all self checkout, at leaset one "idle" -> ServeEvent()
-        check canQueue() -> throw WaitEvent() & add in queueList
+        -check canQueue() -> throw WaitEvent() & add in queueList
             (1) working & empty seat in queue
             (2) rest & has next & empty seat in queue
-        check self-checkout can queue() ->total queue exceed?
+        -check rest & no next -> start after rest complete(By add customer into queue) (guess no need anymore)
+        -check self-checkout can queue() ->total queue exceed?
             add in totoal queue()
     2.WaitEvent()
 
