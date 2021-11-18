@@ -1,4 +1,5 @@
 **Simulate**
+
     1.ArriveEvent:
         -check canServe() 
             (1) idle -> add ServeEvent()
@@ -10,6 +11,7 @@
         -check rest & no next -> start after rest complete(By add customer into queue) (guess no need anymore)
         -check self-checkout can queue() ->total queue exceed?
             add in totoal queue()
+            
     2.WaitEvent()
 
     3.RestEvent()
