@@ -1,9 +1,9 @@
 **Level5**
-    \n RandomGenerator(seed, arrivalrate, servicerate, rho)
-    \n Step1 generate the customers with genInterArrival(), whether greedy() -done
-    \n Step2 add serviceTime in DoneEvent -done
-    \n Step3 edit rest in DoneEvent -> If rest, generate the restTime -done
-    \n Step4 deal with greedy
+    RandomGenerator(seed, arrivalrate, servicerate, rho)
+    Step1 generate the customers with genInterArrival(), whether greedy() -done
+    Step2 add serviceTime in DoneEvent -done
+    Step3 edit rest in DoneEvent -> If rest, generate the restTime -done
+    Step4 deal with greedy
 
 **Simulate**
     1.ArriveEvent:
